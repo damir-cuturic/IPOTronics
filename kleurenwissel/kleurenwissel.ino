@@ -14,7 +14,7 @@ int pin1 = 0;
 
 void setup()
 {
-  Serial.begin(9600);        // set the serial communication frequency at 9600 bits per sec
+  Serial.begin(9600);               // set the serial communication frequency at 9600 bits per sec
   pinMode(potentiometer, INPUT);
   lcd.begin(16, 2);
   lcd.print("I change colors!");
@@ -31,7 +31,7 @@ void loop()
   blue = green - 170;
 
   lcd.setRGB(red, green, blue);
-  Serial.println(blue);
+  Serial.println(blue);              // Displays the values of the selected color in the "Serial Monitor" :: red, green, blue are possile inputs
   delay(1000);
 }
 
