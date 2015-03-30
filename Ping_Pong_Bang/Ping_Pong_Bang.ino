@@ -28,8 +28,8 @@ void setup() {
   ballservo.attach(10);                                        // Servo  SER1 on Motorshield == arduino pin10 || SER_2 == pin9
   motor1.setSpeed(255);
   motor2.setSpeed(255);
-  lcd.begin(16,2);
-  lcd.setRGB(0,0,0);
+  lcd.begin(16, 2);
+  lcd.setRGB(0, 0, 0);
   lcd.print("Hello");
 }
 
@@ -37,17 +37,19 @@ void loop() {
   Serial.println("Going Forward!");
   buttonstate = digitalRead(buttonPin);
   if (buttonstate == HIGH) {
-     servomove();
-      runrun();
-      for(int i=3; i>=0; i--){
-          lcd.setCursor(0,0);
-          lcd.print("Balls left");
-          lcd.print(i);
-      }
-    Serial.println("Wait 3 sec");
-    delay(3000);
-    buttonstate = 0;
+    servomove();
+    runrun();
+    /*
+    for(int i=3; i>=0; i--){
+        lcd.setCursor(0,0);
+        lcd.print("Balls left");
+        lcd.print(i);
+      */
   }
+  Serial.println("Wait 3 sec");
+  delay(3000);
+  buttonstate = 0;
+}
 }
 
 void runrun() {
