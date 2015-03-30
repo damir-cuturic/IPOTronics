@@ -1,3 +1,5 @@
+#include <rgb_lcd.h>
+#include <Wire.h>
 #include <Servo.h>
 #include <AFMotor.h>
 /*
@@ -12,6 +14,7 @@ AF_DCMotor motor1(1, MOTOR12_1KHZ);     // Create motor Object at port 1, with f
 AF_DCMotor motor2(2, MOTOR12_1KHZ);     // Create motor Object at port 2, with frequency
 
 Servo ballservo;                                                // Servo Object
+rgb_lcd lcd;                                                       // LCD object
 
 const int buttonPin = 2;                                     // Enige ongebruikte pin op arduino shield
 int buttonstate = 0;
@@ -25,7 +28,9 @@ void setup() {
   ballservo.attach(10);                                        // Servo  SER1 on Motorshield == arduino pin10 || SER_2 == pin9
   motor1.setSpeed(255);
   motor2.setSpeed(255);
-
+  lcd.begin(16,2);
+  lcd.setRGB(0,0,0);
+  lcd.print("Hello");
 }
 
 void loop() {
