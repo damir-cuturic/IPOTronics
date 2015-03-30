@@ -39,6 +39,11 @@ void loop() {
   if (buttonstate == HIGH) {
      servomove();
       runrun();
+      for(int i=3; i>=0; i--){
+          lcd.setCursor(0,0);
+          lcd.print("Balls left");
+          lcd.print(i);
+      }
     Serial.println("Wait 3 sec");
     delay(3000);
     buttonstate = 0;
