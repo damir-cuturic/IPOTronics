@@ -1,3 +1,4 @@
+#include <Servo.h>
 #include <AFMotor.h>
 /*
     Channel 1 & 2                Channel 3 & 4
@@ -7,29 +8,32 @@
     MOTOR12_1KHZ
 
 */
-AF_DCMotor motor1(1, MOTOR12_64KHZ);     // Create motor Object at port 1, with frequency
-AF_DCMotor motor2(2, MOTOR12_64KHZ);     // Create motor Object at port 2, with frequency
-const int buttonPin = 2; // set
-int buttonstate = 0;
+AF_DCMotor motor1(1, MOTOR12_1KHZ);     // Create motor Object at port 1, with frequency
+AF_DCMotor motor2(2, MOTOR12_1KHZ);     // Create motor Object at port 2, with frequency
 
+Servo ballservo;                                                // Servo Object
+
+const int buttonPin = 2;                                     // Enige ongebruikte pin op arduino shield
+int buttonstate = 0;
+int pos = 90;
+int dela = 10;                                                      // delay variabele om het eenkeer aan te passen
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(buttonPin, INPUT);
   Serial.begin(9600);
-  Serial.print("Hello MoTo");
-  Serial.print("\n");
+  Serial.println("Hello MoTo");
+  ballservo.attach(10);                                        // Servo  SER1 on Motorshield == arduino pin10 || SER_2 == pin9
   motor1.setSpeed(255);
   motor2.setSpeed(255);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   Serial.println("Going Forward!");
   buttonstate = digitalRead(buttonPin);
   if (buttonstate == HIGH) {
-    runrun();
+     servomove();
+      runrun();
     Serial.println("Wait 3 sec");
     delay(3000);
     buttonstate = 0;
@@ -39,10 +43,23 @@ void loop() {
 void runrun() {
   Serial.print("\n");
   Serial.print("Go!");
-    motor1.run(FORWARD); // turn it on going forward
-    motor2.run(BACKWARD); // turn it on going forward
+  motor1.run(FORWARD);                                     // turn it on going forward
+  motor2.run(BACKWARD);                                   // turn it on going forward
   delay(2000);
   Serial.print("Stop!");
   motor1.run(RELEASE);
   motor2.run(RELEASE);
+}
+
+void servomove() {
+  for (pos = 0; pos <= 90; pos += 1)                 // goes from 0 degrees to 180 degrees in steps of 1 degree
+  {
+    ballservo.write(pos);                                   // tell servo to go to position in variable 'pos'
+    delay(dela);                                                   // waits 5ms for the servo to reach the position
+  }
+  for (pos = 90; pos >= 0; pos -= 1)             // goes from 180 degrees to 0 degrees
+  {
+    ballservo.write(pos);                                  // tell servo to go to position in variable 'pos'
+    delay(dela);                                               // waits 5ms for the servo to reach the position
+  }
 }
