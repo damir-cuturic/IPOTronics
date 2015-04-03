@@ -17,65 +17,65 @@ Servo ballservo;                                        // Servo Object
 rgb_lcd lcd;                                            // LCD object
 
 const int buttonPin = 2;                                // Enige ongebruikte pin op arduino shield
-int buttonstate = 0;
-int pos = 90;
+int buttonstate = 0;                                      // buttonstate
+int pos = 0;                                                // Position servo
 int ServoDelay = 10;                                    // delay variabele om het eenkeer aan te passen
-int teller = 3;
+int teller = 3;                                                // begin value servo 
 
 void setup() {
-  pinMode(buttonPin, INPUT);
-  Serial.begin(9600);
-  Serial.println("Hello MoTo");
-  ballservo.attach(10);                                 // Servo  SER1 on Motorshield == arduino pin10 || SER_2 == pin9
-  motor1.setSpeed(255);
-  motor2.setSpeed(255);
-  lcd.begin(16, 2);
-  lcd.setRGB(0, 0, 255);
-  lcd.setCursor(0, 0);
-  lcd.print("Hello");
+  pinMode(buttonPin, INPUT);                     // Button pin 
+  Serial.begin(9600);                                 // Begin Serial communication voor debugging
+  Serial.println("Hello MoTo");                    // Print 
+  ballservo.attach(10);                                // Servo  SER1 on Motorshield == arduino pin10 || SER_2 == pin9
+  motor1.setSpeed(100);                            // Set motor1 speed
+  motor2.setSpeed(100);                            // Set motor2 speed
+  lcd.begin(16, 2);                                       // Begin LCD.screen
+  lcd.setRGB(0, 0, 255);                             // LCD color
+  lcd.setCursor(0, 0);                                  // Set Cursor
+  lcd.print("Hello");                                      // Print "Hello" to LCD
 }
 
 void loop() {
-  Serial.println("Going Forward!");
-  lcd.setCursor(0, 0);
-  buttonstate = digitalRead(buttonPin);
+  Serial.println("Going Forward!");            // Debugging 
+  lcd.setCursor(0, 0);                                 // Set Cursor LCD
+  buttonstate = digitalRead(buttonPin);     // Read Button State
 
   if (teller == 0) {
-    Serial.print("Start Teller");
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("RELOAD! RELOAD!");
-    teller = 3;
-    delay(1000);
-    lcd.clear();
-    Serial.print("END Teller");
+    Serial.print("Start Teller");                    // Debugging
+    lcd.clear();                                            // Clear LCD screen
+    lcd.setCursor(0, 0);                              // Place Crusor
+    lcd.print("RELOAD! RELOAD!");          // Print Message 
+    teller = 3;                                              // Reset counter to 3 
+    delay(1000);                                         // delay
+    lcd.clear();                                            // Clear LCD
+    Serial.print("END Teller");                    // Debugging
   }
   else {
-    if (buttonstate == HIGH) {
-      servomove();
-      runrun();
-      Serial.println("teset");
-      lcd.clear();
-      teller--;
-      lcd.setCursor(1, 0);
-      lcd.print("Ball Count ");
-      lcd.print(teller);
-      Serial.println("Wait 3 sec");
-      delay(3000);
-      buttonstate = 0;
+    if (buttonstate == HIGH) {                      // If button pressed 
+      servomove();                                      // Run servomove see bottom
+      runrun();                                            // Run runrun see bottom
+      Serial.println("teset");                       // Debugging
+      lcd.clear();                                         // Clear LCD
+      teller--;                                              // substract 1 from teller
+      lcd.setCursor(1, 0);                            // set cursor to row 2
+      lcd.print("Ball Count ");                       // print to lcd
+      lcd.print(teller);                                    // print to lcd
+      Serial.println("Wait 3 sec");                // debugging
+      delay(3000);                                            // delay
+      buttonstate = 0;                                   // reset buttonstate
     }
   }
 }
 
 void runrun() {
-  Serial.print("\n");
-  Serial.print("Go!");
+  Serial.print("\n");                        // debugging
+  Serial.print("Go!");                    // debugging
   motor1.run(FORWARD);                                  // turn it on going forward
   motor2.run(BACKWARD);                                 // turn it on going forward
-  delay(4000);
-  Serial.print("Stop!");
-  motor1.run(RELEASE);
-  motor2.run(RELEASE);
+  delay(2000);
+  Serial.print("Stop!");                                        // debugging
+  motor1.run(RELEASE);                                   // stop motor     
+  motor2.run(RELEASE);                                   // stop motor
 }
 
 void servomove() {
